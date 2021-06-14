@@ -351,7 +351,7 @@ class modXsport extends DolibarrModules
             'fk_menu'=>'fk_mainmenu=xsport',
             // This is a Left menu entry
             'type'=>'left',
-            'titre'=>'List Piste',
+            'titre'=>'Liste des Accès Piste',
             'mainmenu'=>'xsport',
             'leftmenu'=>'xsport_piste',
             'url'=>'/xsport/piste_list.php',
@@ -371,7 +371,7 @@ class modXsport extends DolibarrModules
             'fk_menu'=>'fk_mainmenu=xsport,fk_leftmenu=xsport_piste',
             // This is a Left menu entry
             'type'=>'left',
-            'titre'=>'New Piste',
+            'titre'=>'Nouvel Accès Piste',
             'mainmenu'=>'xsport',
             'leftmenu'=>'xsport_piste',
             'url'=>'/xsport/piste_card.php?action=create',
