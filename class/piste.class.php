@@ -137,6 +137,7 @@ class Piste extends CommonObject
 	public $import_key;
 	public $model_pdf;
 	public $status;
+	public $dispo;
 	// END MODULEBUILDER PROPERTIES
 
 
