@@ -17,9 +17,9 @@
  */
 
 /**
- * \file        class/piste.class.php
+ * \file        class/reservation.class.php
  * \ingroup     xsport
- * \brief       This file is a CRUD class file for Piste (Create/Read/Update/Delete)
+ * \brief       This file is a CRUD class file for Reservation (Create/Read/Update/Delete)
  */
 
 // Put here all includes required by your class file
@@ -28,9 +28,9 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/commonobject.class.php';
 //require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
 /**
- * Class for Piste
+ * Class for Reservation
  */
-class Piste extends CommonObject
+class Reservation extends CommonObject
 {
 	/**
 	 * @var string ID of module.
@@ -40,12 +40,12 @@ class Piste extends CommonObject
 	/**
 	 * @var string ID to identify managed object.
 	 */
-	public $element = 'piste';
+	public $element = 'reservation';
 
 	/**
 	 * @var string Name of table without prefix where object is stored. This is also the key used for extrafields management.
 	 */
-	public $table_element = 'xsport_piste';
+	public $table_element = 'xsport_reservation';
 
 	/**
 	 * @var int  Does this object support multicompany module ?
@@ -59,9 +59,9 @@ class Piste extends CommonObject
 	public $isextrafieldmanaged = 1;
 
 	/**
-	 * @var string String with name of icon for piste. Must be the part after the 'object_' into object_piste.png
+	 * @var string String with name of icon for reservation. Must be the part after the 'object_' into object_reservation.png
 	 */
-	public $picto = 'piste@xsport';
+	public $picto = 'reservation@xsport';
 
 
 	const STATUS_DRAFT = 0;
@@ -102,10 +102,11 @@ class Piste extends CommonObject
 	public $fields=array(
 		'rowid' => array('type'=>'integer', 'label'=>'TechnicalID', 'enabled'=>'1', 'position'=>1, 'notnull'=>1, 'visible'=>0, 'noteditable'=>'1', 'index'=>1, 'css'=>'left', 'comment'=>"Id"),
 		'ref' => array('type'=>'varchar(128)', 'label'=>'Ref', 'enabled'=>'1', 'position'=>10, 'notnull'=>1, 'visible'=>4, 'noteditable'=>'1', 'default'=>'(PROV)', 'index'=>1, 'searchall'=>1, 'showoncombobox'=>'1', 'comment'=>"Reference of object"),
-		'label' => array('type'=>'varchar(255)', 'label'=>'Label', 'enabled'=>'1', 'position'=>30, 'notnull'=>0, 'visible'=>1, 'searchall'=>1, 'css'=>'minwidth300', 'help'=>"SlopeName", 'showoncombobox'=>'1',),
-		'amount' => array('type'=>'price', 'label'=>'Amount', 'enabled'=>'1', 'position'=>40, 'notnull'=>0, 'visible'=>1, 'default'=>'null', 'isameasure'=>'1', 'help'=>"SlopePrice",),
-		'qty' => array('type'=>'real', 'label'=>'Qty', 'enabled'=>'1', 'position'=>45, 'notnull'=>0, 'visible'=>1, 'default'=>'0', 'isameasure'=>'1', 'css'=>'maxwidth75imp',),
+		'label' => array('type'=>'varchar(255)', 'label'=>'Label', 'enabled'=>'1', 'position'=>30, 'notnull'=>0, 'visible'=>1, 'searchall'=>1, 'css'=>'minwidth300', 'help'=>"Help text", 'showoncombobox'=>'1',),
+		'amount' => array('type'=>'price', 'label'=>'Amount', 'enabled'=>'1', 'position'=>40, 'notnull'=>0, 'visible'=>1, 'default'=>'null', 'isameasure'=>'1', 'help'=>"Help text for amount",),
+		'qty' => array('type'=>'real', 'label'=>'Qty', 'enabled'=>'1', 'position'=>45, 'notnull'=>0, 'visible'=>1, 'default'=>'0', 'isameasure'=>'1', 'css'=>'maxwidth75imp', 'help'=>"Help text for quantity",),
 		'fk_soc' => array('type'=>'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)', 'label'=>'ThirdParty', 'enabled'=>'1', 'position'=>50, 'notnull'=>-1, 'visible'=>1, 'index'=>1, 'help'=>"LinkToThirparty",),
+		'fk_project' => array('type'=>'integer:Project:projet/class/project.class.php:1', 'label'=>'Project', 'enabled'=>'1', 'position'=>52, 'notnull'=>-1, 'visible'=>-1, 'index'=>1,),
 		'description' => array('type'=>'text', 'label'=>'Description', 'enabled'=>'1', 'position'=>60, 'notnull'=>0, 'visible'=>3,),
 		'note_public' => array('type'=>'html', 'label'=>'NotePublic', 'enabled'=>'1', 'position'=>61, 'notnull'=>0, 'visible'=>0,),
 		'note_private' => array('type'=>'html', 'label'=>'NotePrivate', 'enabled'=>'1', 'position'=>62, 'notnull'=>0, 'visible'=>0,),
@@ -117,11 +118,6 @@ class Piste extends CommonObject
 		'import_key' => array('type'=>'varchar(14)', 'label'=>'ImportId', 'enabled'=>'1', 'position'=>1000, 'notnull'=>-1, 'visible'=>-2,),
 		'model_pdf' => array('type'=>'varchar(255)', 'label'=>'Model pdf', 'enabled'=>'1', 'position'=>1010, 'notnull'=>-1, 'visible'=>0,),
 		'status' => array('type'=>'smallint', 'label'=>'Status', 'enabled'=>'1', 'position'=>1000, 'notnull'=>1, 'visible'=>1, 'index'=>1, 'arrayofkeyval'=>array('0'=>'Brouillon', '1'=>'Valid&eacute;', '9'=>'Annul&eacute;'),),
-		'dispo' => array('type'=>'integer', 'label'=>'Disponibilité', 'enabled'=>'1', 'position'=>31, 'notnull'=>1, 'visible'=>1, 'arrayofkeyval'=>array('0'=>'DispoOpen', '1'=>'DispoClose'),),
-		'lengthM' => array('type'=>'integer', 'label'=>'Length', 'help'=>"LengthM", 'enabled'=>'1', 'position'=>32, 'notnull'=>1, 'visible'=>1,),
-		'participantNumber' => array('type'=>'integer', 'label'=>'ParticipantMax', 'enabled'=>'1', 'position'=>33, 'notnull'=>1, 'visible'=>1,),
-		'level' => array('type'=>'integer', 'label'=>'Level', 'enabled'=>'1', 'position'=>34, 'notnull'=>1, 'visible'=>1, 'arrayofkeyval'=>array('0'=>'LevelGreen', '1'=>'LevelBlue', '2'=>'LevelRed', '3'=>'LevelBlack'),),
-		'type' => array('type'=>'integer', 'label'=>'Type', 'enabled'=>'1', 'position'=>35, 'notnull'=>1, 'visible'=>1, 'arrayofkeyval'=>array('0'=>'Crosscountry', '1'=>'Backcountry', '2'=>'Alpine', '3'=>'Snowpark'),),
 	);
 	public $rowid;
 	public $ref;
@@ -129,6 +125,7 @@ class Piste extends CommonObject
 	public $amount;
 	public $qty;
 	public $fk_soc;
+	public $fk_project;
 	public $description;
 	public $note_public;
 	public $note_private;
@@ -140,10 +137,6 @@ class Piste extends CommonObject
 	public $import_key;
 	public $model_pdf;
 	public $status;
-	public $dispo;
-	public $lengthM;
-	public $participantNumber;
-	public $level;
 	// END MODULEBUILDER PROPERTIES
 
 
@@ -152,17 +145,17 @@ class Piste extends CommonObject
 	// /**
 	//  * @var string    Name of subtable line
 	//  */
-	// public $table_element_line = 'xsport_pisteline';
+	// public $table_element_line = 'xsport_reservationline';
 
 	// /**
 	//  * @var string    Field with ID of parent key if this object has a parent
 	//  */
-	// public $fk_element = 'fk_piste';
+	// public $fk_element = 'fk_reservation';
 
 	// /**
 	//  * @var string    Name of subtable class that manage subtable lines
 	//  */
-	// public $class_element_line = 'Pisteline';
+	// public $class_element_line = 'Reservationline';
 
 	// /**
 	//  * @var array	List of child tables. To test if we can delete object.
@@ -174,10 +167,10 @@ class Piste extends CommonObject
 	//  *               If name matches '@ClassNAme:FilePathClass;ParentFkFieldName' it will
 	//  *               call method deleteByParentField(parentId, ParentFkFieldName) to fetch and delete child object
 	//  */
-	// protected $childtablesoncascade = array('xsport_pistedet');
+	// protected $childtablesoncascade = array('xsport_reservationdet');
 
 	// /**
-	//  * @var PisteLine[]     Array of subtable lines
+	//  * @var ReservationLine[]     Array of subtable lines
 	//  */
 	// public $lines = array();
 
@@ -198,7 +191,7 @@ class Piste extends CommonObject
 		if (empty($conf->multicompany->enabled) && isset($this->fields['entity'])) $this->fields['entity']['enabled'] = 0;
 
 		// Example to show how to set values of fields definition dynamically
-		/*if ($user->rights->xsport->piste->read) {
+		/*if ($user->rights->xsport->reservation->read) {
 			$this->fields['myfield']['visible'] = 1;
 			$this->fields['myfield']['noteditable'] = 0;
 		}*/
@@ -506,8 +499,8 @@ class Piste extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->xsport->piste->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->xsport->piste->piste_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->xsport->reservation->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->xsport->reservation->reservation_advance->validate))))
 		 {
 		 $this->error='NotEnoughPermissions';
 		 dol_syslog(get_class($this)."::valid ".$this->error, LOG_ERR);
@@ -548,7 +541,7 @@ class Piste extends CommonObject
 			if (!$error && !$notrigger)
 			{
 				// Call trigger
-				$result = $this->call_trigger('PISTE_VALIDATE', $user);
+				$result = $this->call_trigger('RESERVATION_VALIDATE', $user);
 				if ($result < 0) $error++;
 				// End call triggers
 			}
@@ -562,16 +555,16 @@ class Piste extends CommonObject
 			if (preg_match('/^[\(]?PROV/i', $this->ref))
 			{
 				// Now we rename also files into index
-				$sql = 'UPDATE '.MAIN_DB_PREFIX."ecm_files set filename = CONCAT('".$this->db->escape($this->newref)."', SUBSTR(filename, ".(strlen($this->ref) + 1).")), filepath = 'piste/".$this->db->escape($this->newref)."'";
-				$sql .= " WHERE filename LIKE '".$this->db->escape($this->ref)."%' AND filepath = 'piste/".$this->db->escape($this->ref)."' and entity = ".$conf->entity;
+				$sql = 'UPDATE '.MAIN_DB_PREFIX."ecm_files set filename = CONCAT('".$this->db->escape($this->newref)."', SUBSTR(filename, ".(strlen($this->ref) + 1).")), filepath = 'reservation/".$this->db->escape($this->newref)."'";
+				$sql .= " WHERE filename LIKE '".$this->db->escape($this->ref)."%' AND filepath = 'reservation/".$this->db->escape($this->ref)."' and entity = ".$conf->entity;
 				$resql = $this->db->query($sql);
 				if (!$resql) { $error++; $this->error = $this->db->lasterror(); }
 
 				// We rename directory ($this->ref = old ref, $num = new ref) in order not to lose the attachments
 				$oldref = dol_sanitizeFileName($this->ref);
 				$newref = dol_sanitizeFileName($num);
-				$dirsource = $conf->xsport->dir_output.'/piste/'.$oldref;
-				$dirdest = $conf->xsport->dir_output.'/piste/'.$newref;
+				$dirsource = $conf->xsport->dir_output.'/reservation/'.$oldref;
+				$dirdest = $conf->xsport->dir_output.'/reservation/'.$newref;
 				if (!$error && file_exists($dirsource))
 				{
 					dol_syslog(get_class($this)."::validate() rename dir ".$dirsource." into ".$dirdest);
@@ -580,7 +573,7 @@ class Piste extends CommonObject
 					{
 						dol_syslog("Rename ok");
 						// Rename docs starting with $oldref with $newref
-						$listoffiles = dol_dir_list($conf->xsport->dir_output.'/piste/'.$newref, 'files', 1, '^'.preg_quote($oldref, '/'));
+						$listoffiles = dol_dir_list($conf->xsport->dir_output.'/reservation/'.$newref, 'files', 1, '^'.preg_quote($oldref, '/'));
 						foreach ($listoffiles as $fileentry)
 						{
 							$dirsource = $fileentry['name'];
@@ -634,7 +627,7 @@ class Piste extends CommonObject
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_DRAFT, $notrigger, 'PISTE_UNVALIDATE');
+		return $this->setStatusCommon($user, self::STATUS_DRAFT, $notrigger, 'RESERVATION_UNVALIDATE');
 	}
 
 	/**
@@ -659,7 +652,7 @@ class Piste extends CommonObject
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_CANCELED, $notrigger, 'PISTE_CANCEL');
+		return $this->setStatusCommon($user, self::STATUS_CANCELED, $notrigger, 'RESERVATION_CANCEL');
 	}
 
 	/**
@@ -684,7 +677,7 @@ class Piste extends CommonObject
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'PISTE_REOPEN');
+		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'RESERVATION_REOPEN');
 	}
 
 	/**
@@ -705,14 +698,14 @@ class Piste extends CommonObject
 
 		$result = '';
 
-		$label = img_picto('', $this->picto).' <u>'.$langs->trans("Piste").'</u>';
+		$label = img_picto('', $this->picto).' <u>'.$langs->trans("Reservation").'</u>';
 		if (isset($this->status)) {
 			$label .= ' '.$this->getLibStatut(5);
 		}
 		$label .= '<br>';
 		$label .= '<b>'.$langs->trans('Ref').':</b> '.$this->ref;
 
-		$url = dol_buildpath('/xsport/piste_card.php', 1).'?id='.$this->id;
+		$url = dol_buildpath('/xsport/reservation_card.php', 1).'?id='.$this->id;
 
 		if ($option != 'nolink')
 		{
@@ -727,7 +720,7 @@ class Piste extends CommonObject
 		{
 			if (!empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER))
 			{
-				$label = $langs->trans("ShowPiste");
+				$label = $langs->trans("ShowReservation");
 				$linkclose .= ' alt="'.dol_escape_htmltag($label, 1).'"';
 			}
 			$linkclose .= ' title="'.dol_escape_htmltag($label, 1).'"';
@@ -773,7 +766,7 @@ class Piste extends CommonObject
 		//if ($withpicto != 2) $result.=(($addlabel && $this->label) ? $sep . dol_trunc($this->label, ($addlabel > 1 ? $addlabel : 0)) : '');
 
 		global $action, $hookmanager;
-		$hookmanager->initHooks(array('pistedao'));
+		$hookmanager->initHooks(array('reservationdao'));
 		$parameters = array('id'=>$this->id, 'getnomurl'=>$result);
 		$reshook = $hookmanager->executeHooks('getNomUrl', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
 		if ($reshook > 0) $result = $hookmanager->resPrint;
@@ -894,8 +887,8 @@ class Piste extends CommonObject
 	{
 		$this->lines = array();
 
-		$objectline = new PisteLine($this->db);
-		$result = $objectline->fetchAll('ASC', 'position', 0, 0, array('customsql'=>'fk_piste = '.$this->id));
+		$objectline = new ReservationLine($this->db);
+		$result = $objectline->fetchAll('ASC', 'position', 0, 0, array('customsql'=>'fk_reservation = '.$this->id));
 
 		if (is_numeric($result))
 		{
@@ -918,16 +911,16 @@ class Piste extends CommonObject
 		global $langs, $conf;
 		$langs->load("xsport@xsport");
 
-		if (empty($conf->global->XSPORT_PISTE_ADDON)) {
-			$conf->global->XSPORT_PISTE_ADDON = 'mod_piste_standard';
+		if (empty($conf->global->XSPORT_RESERVATION_ADDON)) {
+			$conf->global->XSPORT_RESERVATION_ADDON = 'mod_reservation_standard';
 		}
 
-		if (!empty($conf->global->XSPORT_PISTE_ADDON))
+		if (!empty($conf->global->XSPORT_RESERVATION_ADDON))
 		{
 			$mybool = false;
 
-			$file = $conf->global->XSPORT_PISTE_ADDON.".php";
-			$classname = $conf->global->XSPORT_PISTE_ADDON;
+			$file = $conf->global->XSPORT_RESERVATION_ADDON.".php";
+			$classname = $conf->global->XSPORT_RESERVATION_ADDON;
 
 			// Include file with class
 			$dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
@@ -988,12 +981,12 @@ class Piste extends CommonObject
 		$langs->load("xsport@xsport");
 
 		if (!dol_strlen($modele)) {
-			$modele = 'standard_piste';
+			$modele = 'standard_reservation';
 
 			if (!empty($this->model_pdf)) {
 				$modele = $this->model_pdf;
-			} elseif (!empty($conf->global->PISTE_ADDON_PDF)) {
-				$modele = $conf->global->PISTE_ADDON_PDF;
+			} elseif (!empty($conf->global->RESERVATION_ADDON_PDF)) {
+				$modele = $conf->global->RESERVATION_ADDON_PDF;
 			}
 		}
 
@@ -1041,12 +1034,12 @@ class Piste extends CommonObject
 require_once DOL_DOCUMENT_ROOT.'/core/class/commonobjectline.class.php';
 
 /**
- * Class PisteLine. You can also remove this and generate a CRUD class for lines objects.
+ * Class ReservationLine. You can also remove this and generate a CRUD class for lines objects.
  */
-class PisteLine extends CommonObjectLine
+class ReservationLine extends CommonObjectLine
 {
-	// To complete with content of an object PisteLine
-	// We should have a field rowid, fk_piste and position
+	// To complete with content of an object ReservationLine
+	// We should have a field rowid, fk_reservation and position
 
 	/**
 	 * @var int  Does object support extrafields ? 0=No, 1=Yes

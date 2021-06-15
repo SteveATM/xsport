@@ -16,6 +16,14 @@
 #
 # Generic
 #
+Crosscountry = cross-country
+Backcountry = back-country
+Alpine = Alpine
+Snowpark = Snowpark
+SlopeName = Piste name
+SlopePrice = Price for one customer
+LengthM = Meters
+ParticipantMax = Participants max.
 
 # Module label 'ModuleXsportName'
 ModuleXsportName = Xsport

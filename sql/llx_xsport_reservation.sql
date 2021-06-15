@@ -14,7 +14,7 @@
 -- along with this program.  If not, see https://www.gnu.org/licenses/.
 
 
-CREATE TABLE llx_xsport_piste(
+CREATE TABLE llx_xsport_reservation(
 	-- BEGIN MODULEBUILDER FIELDS
 	rowid integer AUTO_INCREMENT PRIMARY KEY NOT NULL, 
 	ref varchar(128) DEFAULT '(PROV)' NOT NULL, 
@@ -22,6 +22,7 @@ CREATE TABLE llx_xsport_piste(
 	amount double DEFAULT NULL, 
 	qty real, 
 	fk_soc integer, 
+	fk_project integer, 
 	description text, 
 	note_public text, 
 	note_private text, 
@@ -32,8 +33,6 @@ CREATE TABLE llx_xsport_piste(
 	last_main_doc varchar(255), 
 	import_key varchar(14), 
 	model_pdf varchar(255), 
-	status smallint NOT NULL, 
-	dispo integer NOT NULL, 
-	lengthM integer NOT NULL
+	status smallint NOT NULL
 	-- END MODULEBUILDER FIELDS
 ) ENGINE=innodb;

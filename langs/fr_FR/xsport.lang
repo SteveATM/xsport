@@ -16,6 +16,14 @@
 #
 # Générique
 #
+Crosscountry = fond
+Backcountry = hors-piste
+Alpine = alpin
+Snowpark = parc à neige
+SlopeName = nom de la piste
+SlopePrice = Prix pour une personne
+LengthM = Mètres
+ParticipantMax = Participants max.
 
 # Module label 'ModuleXsportName'
 ModuleXsportName = Xsport
