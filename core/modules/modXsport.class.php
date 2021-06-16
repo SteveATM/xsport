@@ -279,6 +279,21 @@ class modXsport extends DolibarrModules
 		$this->rights[$r][4] = 'piste'; // In php code, permission will be checked by test if ($user->rights->xsport->level1->level2)
 		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->xsport->level1->level2)
 		$r++;
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Read objects of Xsport'; // Permission label
+		$this->rights[$r][4] = 'reservation'; // In php code, permission will be checked by test if ($user->rights->xsport->level1->level2)
+		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->xsport->level1->level2)
+		$r++;
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Create/Update objects of Xsport'; // Permission label
+		$this->rights[$r][4] = 'reservation'; // In php code, permission will be checked by test if ($user->rights->xsport->level1->level2)
+		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->xsport->level1->level2)
+		$r++;
+		$this->rights[$r][0] = $this->numero + $r; // Permission id (must not be already used)
+		$this->rights[$r][1] = 'Delete objects of Xsport'; // Permission label
+		$this->rights[$r][4] = 'reservation'; // In php code, permission will be checked by test if ($user->rights->xsport->level1->level2)
+		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->xsport->level1->level2)
+		$r++;
 		/* END MODULEBUILDER PERMISSIONS */
 
 		// Main menu entries to add
@@ -366,12 +381,32 @@ class modXsport extends DolibarrModules
             // 0=Menu for internal users, 1=external users, 2=both
             'user'=>2,
         );
+        $this->menu[$r++]=array(
+            // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
+            'fk_menu'=>'fk_mainmenu=xsport,fk_leftmenu=xsport_piste',
+            // This is a Left menu entry
+            'type'=>'left',
+            'titre'=>'Nouvelle Piste',
+            'mainmenu'=>'xsport',
+            'leftmenu'=>'xsport_piste',
+            'url'=>'/xsport/piste_card.php?action=create',
+            // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+            'langs'=>'xsport@xsport',
+            'position'=>1100+$r,
+            // Define condition to show or hide menu entry. Use '$conf->xsport->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
+            'enabled'=>'$conf->xsport->enabled',
+            // Use 'perms'=>'$user->rights->xsport->level1->level2' if you want your menu with a permission rules
+            'perms'=>'1',
+            'target'=>'',
+            // 0=Menu for internal users, 1=external users, 2=both
+            'user'=>2
+        );
 		$this->menu[$r++]=array(
 			// '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'fk_menu'=>'fk_mainmenu=xsport',
 			// This is a Left menu entry
 			'type'=>'left',
-			'titre'=>'Liste des Réservations',
+			'titre'=>'Liste des Réservation',
 			'mainmenu'=>'xsport',
 			'leftmenu'=>'xsport_reservation',
 			'url'=>'/xsport/reservation_list.php',
@@ -406,27 +441,6 @@ class modXsport extends DolibarrModules
 			// 0=Menu for internal users, 1=external users, 2=both
 			'user'=>2
 		);
-        $this->menu[$r++]=array(
-            // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
-            'fk_menu'=>'fk_mainmenu=xsport,fk_leftmenu=xsport_piste',
-            // This is a Left menu entry
-            'type'=>'left',
-            'titre'=>'Nouvelle Piste',
-            'mainmenu'=>'xsport',
-            'leftmenu'=>'xsport_piste',
-            'url'=>'/xsport/piste_card.php?action=create',
-            // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-            'langs'=>'xsport@xsport',
-            'position'=>1100+$r,
-            // Define condition to show or hide menu entry. Use '$conf->xsport->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-            'enabled'=>'$conf->xsport->enabled',
-            // Use 'perms'=>'$user->rights->xsport->level1->level2' if you want your menu with a permission rules
-            'perms'=>'1',
-            'target'=>'',
-            // 0=Menu for internal users, 1=external users, 2=both
-            'user'=>2
-        );
-
 		/* END MODULEBUILDER LEFTMENU PISTE */
 		// Exports profiles provided by this module
 		$r = 1;
