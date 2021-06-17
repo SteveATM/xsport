@@ -18,7 +18,6 @@
 ALTER TABLE llx_xsport_piste ADD INDEX idx_xsport_piste_rowid (rowid);
 ALTER TABLE llx_xsport_piste ADD INDEX idx_xsport_piste_ref (ref);
 ALTER TABLE llx_xsport_piste ADD INDEX idx_xsport_piste_fk_soc (fk_soc);
-ALTER TABLE llx_xsport_piste ADD INDEX idx_xsport_piste_fk_project (fk_project);
 ALTER TABLE llx_xsport_piste ADD CONSTRAINT llx_xsport_piste_fk_user_creat FOREIGN KEY (fk_user_creat) REFERENCES llx_user(rowid);
 ALTER TABLE llx_xsport_piste ADD INDEX idx_xsport_piste_status (status);
 -- END MODULEBUILDER INDEXES
