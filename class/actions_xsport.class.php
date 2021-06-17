@@ -309,4 +309,13 @@ class ActionsXsport
 	}
 
 	/* Add here any other hooked methods... */
+
+	public function addMoreActionsButtons($parameters, &$action, $hookmanager)
+	{
+		global $user;
+
+		print '<a class="butAction" href="'.dol_buildpath('/xsport/piste_card.php?action=create&idmenu=285&mainmenu=xsport&leftmenu=', 1).'?action=edit&amp;id=">'.'Créer piste'.'</a>';
+
+		return 0;
+	}
 }
