@@ -24,6 +24,7 @@ SlopeName = Piste name
 SlopePrice = Price for one customer
 LengthM = Meters
 ParticipantMax = Participants max.
+DateReservation = Book date
 
 # Module label 'ModuleXsportName'
 ModuleXsportName = Xsport

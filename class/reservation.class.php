@@ -102,10 +102,11 @@ class Reservation extends CommonObject
 	public $fields=array(
 		'rowid' => array('type'=>'integer', 'label'=>'TechnicalID', 'enabled'=>'1', 'position'=>1, 'notnull'=>1, 'visible'=>0, 'noteditable'=>'1', 'index'=>1, 'css'=>'left', 'comment'=>"Id"),
 		'ref' => array('type'=>'varchar(128)', 'label'=>'Ref', 'enabled'=>'1', 'position'=>10, 'notnull'=>1, 'visible'=>4, 'noteditable'=>'1', 'default'=>'(PROV)', 'index'=>1, 'searchall'=>1, 'showoncombobox'=>'1', 'comment'=>"Reference of object"),
-		'amount' => array('type'=>'price', 'label'=>'Amount', 'enabled'=>'1', 'position'=>40, 'notnull'=>0, 'visible'=>1, 'default'=>'null', 'isameasure'=>'1', 'help'=>"Help text for amount",),
-		'qty' => array('type'=>'real', 'label'=>'Qty', 'enabled'=>'1', 'position'=>45, 'notnull'=>0, 'visible'=>1, 'default'=>'0', 'isameasure'=>'1', 'css'=>'maxwidth75imp', 'help'=>"Help text for quantity",),
+		'amount' => array('type'=>'price', 'label'=>'Amount', 'enabled'=>'1', 'position'=>45, 'notnull'=>0, 'visible'=>1, 'default'=>'null', 'isameasure'=>'1', 'help'=>"Help text for amount",),
+		'qty' => array('type'=>'real', 'label'=>'Qty', 'enabled'=>'1', 'position'=>40, 'notnull'=>0, 'visible'=>1, 'default'=>'0', 'isameasure'=>'1', 'css'=>'maxwidth75imp', 'help'=>"Help text for quantity",),
 		'fk_soc' => array('type'=>'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)', 'label'=>'ThirdParty', 'enabled'=>'1', 'position'=>31, 'notnull'=>-1, 'visible'=>1, 'index'=>1, 'help'=>"LinkToThirparty",),
-		'fk_piste' => array('type'=>'integer:Xsport:xsport/class/piste.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)', 'label'=>'Piste', 'enabled'=>'1', 'position'=>32, 'notnull'=>-1, 'visible'=>1, 'index'=>1, 'help'=>"test",),
+		'fk_piste' => array('type'=>'integer:Piste:xsport/class/piste.class.php:1:status=1', 'label'=>'Piste', 'enabled'=>'1', 'position'=>32, 'notnull'=>-1, 'visible'=>1, 'index'=>1, 'help'=>"test",),
+		'date_reservation' => array('type'=>'datetime', 'label'=>'DateReservation', 'enabled'=>'1', 'position'=>33, 'notnull'=>1, 'visible'=>1,),
 		'description' => array('type'=>'text', 'label'=>'Description', 'enabled'=>'1', 'position'=>60, 'notnull'=>0, 'visible'=>3,),
 		'note_public' => array('type'=>'html', 'label'=>'NotePublic', 'enabled'=>'1', 'position'=>61, 'notnull'=>0, 'visible'=>0,),
 		'note_private' => array('type'=>'html', 'label'=>'NotePrivate', 'enabled'=>'1', 'position'=>62, 'notnull'=>0, 'visible'=>0,),
@@ -186,6 +187,7 @@ class Reservation extends CommonObject
 		global $conf, $langs;
 
 		$this->db = $db;
+		$this->fields['amount']['default'] = $conf->global->XSPORT_MYPARAM1;
 
 		if (empty($conf->global->MAIN_SHOW_TECHNICAL_ID) && isset($this->fields['rowid'])) $this->fields['rowid']['visible'] = 0;
 		if (empty($conf->multicompany->enabled) && isset($this->fields['entity'])) $this->fields['entity']['enabled'] = 0;
