@@ -106,7 +106,7 @@ class Piste extends CommonObject
 		'amount' => array('type'=>'price', 'label'=>'Amount', 'enabled'=>'1', 'position'=>40, 'notnull'=>0, 'visible'=>1, 'default'=>10, 'isameasure'=>'1', 'help'=>"SlopePrice",),
 		'qty' => array('type'=>'real', 'label'=>'Qty', 'enabled'=>'1', 'position'=>45, 'notnull'=>0, 'visible'=>1, 'default'=>'0', 'isameasure'=>'1', 'css'=>'maxwidth75imp',),
 		'fk_soc' => array('type'=>'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)', 'label'=>'ThirdParty', 'enabled'=>'1', 'position'=>50, 'notnull'=>-1, 'visible'=>1, 'index'=>1, 'help'=>"LinkToThirparty",),
-		'fk_ecopass' => array('type'=>'integer:Product:product/class/product.class.php:1:', 'label'=>'Eco Pass', 'enabled'=>'1', 'position'=>51, 'notnull'=>-1, 'visible'=>1, 'index'=>1, 'help'=>"LinkToThirparty",),
+		'fk_ecopass' => array('type'=>'integer:Product:product/class/product.class.php:1:', 'label'=>'Eco Pass', 'enabled'=>'1', 'position'=>51, 'notnull'=>-1, 'visible'=>1, 'index'=>1, 'help'=>"LinkToThirparty", 'default'=>0),
 		'description' => array('type'=>'text', 'label'=>'Description', 'enabled'=>'1', 'position'=>60, 'notnull'=>0, 'visible'=>3,),
 		'note_public' => array('type'=>'html', 'label'=>'NotePublic', 'enabled'=>'1', 'position'=>61, 'notnull'=>0, 'visible'=>0,),
 		'note_private' => array('type'=>'html', 'label'=>'NotePrivate', 'enabled'=>'1', 'position'=>62, 'notnull'=>0, 'visible'=>0,),
@@ -124,6 +124,7 @@ class Piste extends CommonObject
 		'level' => array('type'=>'integer', 'label'=>'Level', 'enabled'=>'1', 'position'=>34, 'notnull'=>1, 'visible'=>1, 'arrayofkeyval'=>array('0'=>'LevelGreen', '1'=>'LevelBlue', '2'=>'LevelRed', '3'=>'LevelBlack'),),
 		'type' => array('type'=>'integer', 'label'=>'Type', 'enabled'=>'1', 'position'=>35, 'notnull'=>1, 'visible'=>1, 'arrayofkeyval'=>array('0'=>'Crosscountry', '1'=>'Backcountry', '2'=>'Alpine', '3'=>'Snowpark'),),
 	);
+
 	public $rowid;
 	public $ref;
 	public $label;

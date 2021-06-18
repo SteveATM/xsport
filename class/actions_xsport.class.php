@@ -314,7 +314,7 @@ class ActionsXsport
 	{
 		global $user;
 
-		print '<a class="butAction" href="'.dol_buildpath('/xsport/piste_card.php?action=create&idmenu=285&mainmenu=xsport&leftmenu=', 1).'?action=edit&amp;id=">'.'Créer piste'.'</a>';
+		print '<a class="butAction" href="'.dol_buildpath('/xsport/piste_card.php?action=create&idmenu=285&mainmenu=xsport&leftmenu=?edit&fk_ecopass='.$_GET['id'] , 1).'">'.'Créer piste'.'</a>';
 
 		return 0;
 	}
