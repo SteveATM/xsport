@@ -60,7 +60,8 @@ $type = 'myobject';
 
 $arrayofparameters = array(
 	'XSPORT_MYPARAM1'=>array('css'=>'minwidth200', 'enabled'=>1),
-	'XSPORT_MYPARAM2'=>array('css'=>'minwidth500', 'enabled'=>1)
+	'XSPORT_MYPARAM2'=>array('css'=>'minwidth500', 'enabled'=>1),
+	'XSPORT_MYPARAM3'=>array('css'=>'minwidth200', 'enabled'=>1)
 );
 
 $error = 0;
