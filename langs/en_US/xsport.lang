@@ -37,11 +37,11 @@ ModuleXsportDesc = Xsport description
 XsportSetup = Xsport setup
 Settings = Settings
 XsportSetupPage = Xsport setup page
-XSPORT_MYPARAM1 = My param 1
-XSPORT_MYPARAM1Tooltip = My param 1 tooltip
+XSPORT_MYPARAM1 = Piste default price
+XSPORT_MYPARAM1Tooltip = Piste default price tooltip
 XSPORT_MYPARAM2=My param 2
 XSPORT_MYPARAM2Tooltip=My param 2 tooltip
-
+XSPORT_MYPARAM3 = Test param
 
 #
 # About page
