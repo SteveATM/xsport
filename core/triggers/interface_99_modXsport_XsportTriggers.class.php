@@ -144,7 +144,7 @@ class InterfaceXsportTriggers extends DolibarrTriggers
 			// Products
 			//case 'PRODUCT_CREATE':
 			//case 'PRODUCT_MODIFY':
-			//case 'PRODUCT_DELETE':
+			case 'PRODUCT_DELETE':
 			//case 'PRODUCT_PRICE_MODIFY':
 			//case 'PRODUCT_SET_MULTILANGS':
 			//case 'PRODUCT_DEL_MULTILANGS':
