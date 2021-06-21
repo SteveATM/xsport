@@ -145,6 +145,9 @@ class InterfaceXsportTriggers extends DolibarrTriggers
 			//case 'PRODUCT_CREATE':
 			//case 'PRODUCT_MODIFY':
 			case 'PRODUCT_DELETE':
+				$db = $this->db;
+				$db->query('DELETE FROM llx_xsport_piste WHERE fk_ecopass = '. $object->id);
+				break;
 			//case 'PRODUCT_PRICE_MODIFY':
 			//case 'PRODUCT_SET_MULTILANGS':
 			//case 'PRODUCT_DEL_MULTILANGS':
