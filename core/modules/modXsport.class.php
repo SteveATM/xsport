@@ -452,33 +452,29 @@ class modXsport extends DolibarrModules
 		$this->export_label[$r]='PisteLines';	// Translation key (used only if key ExportDataset_xxx_z not found)
 		$this->export_icon[$r]='piste@xsport';
 		$this->export_fields_array[$r] = array(
-			'p.rowid'=>"Id", 'p.ref'=>"Ref", 'p.label'=>"Label",
+			'p.ref'=>"Ref", 'p.label'=>"Label",
 		);
 		$this->export_TypeFields_array[$r] = array(
 			'p.ref'=>"Text", 'p.label'=>"Text",
 		);
 		$this->export_entities_array[$r] = array(
-			'p.rowid'=>"piste", 'p.ref'=>"piste",
+			'p.ref'=>"piste", 'p.label'=>"piste",
 		);
 		$keyforclass = 'Piste'; $keyforclassfile='/xsport/class/piste.class.php'; $keyforelement='piste@xsport';
-		include DOL_DOCUMENT_ROOT.'/core/commonfieldsinexport.inc.php';
-		$this->export_fields_array[$r]['t.fieldtoadd']='FieldToAdd'; $this->export_TypeFields_array[$r]['t.fieldtoadd']='Text';
-		unset($this->export_fields_array[$r]['t.fieldtoremove']);
-		$keyforclass = 'PisteLine'; $keyforclassfile='/xsport/class/piste.class.php'; $keyforelement='pisteline@xsport'; $keyforalias='tl';
-		include DOL_DOCUMENT_ROOT.'/core/commonfieldsinexport.inc.php';
-		$keyforselect='piste'; $keyforaliasextra='extra'; $keyforelement='piste@xsport';
-		include DOL_DOCUMENT_ROOT.'/core/extrafieldsinexport.inc.php';
-		$keyforselect='pisteline'; $keyforaliasextra='extraline'; $keyforelement='pisteline@xsport';
-		include DOL_DOCUMENT_ROOT.'/core/extrafieldsinexport.inc.php';
+		//$this->export_fields_array[$r]['t.fieldtoadd']='FieldToAdd'; $this->export_TypeFields_array[$r]['t.fieldtoadd']='Text';
+		//unset($this->export_fields_array[$r]['t.fieldtoremove']);
+		//$keyforclass = 'PisteLine'; $keyforclassfile='/xsport/class/piste.class.php'; $keyforelement='pisteline@xsport'; $keyforalias='tl';
+		//$keyforselect='piste'; $keyforaliasextra='extra'; $keyforelement='piste@xsport';
+		//$keyforselect='pisteline'; $keyforaliasextra='extraline'; $keyforelement='pisteline@xsport';
 		$this->export_dependencies_array[$r] = array('pisteline'=>array('tl.rowid','tl.ref')); // To force to activate one or several fields if we select some fields that need same (like to select a unique key if we ask a field of a child to avoid the DISTINCT to discard them, or for computed field than need several other fields)
 		$this->export_special_array[$r] = array('t.field'=>'...');
 		$this->export_examplevalues_array[$r] = array('t.field'=>'Example');
 		$this->export_help_array[$r] = array('t.field'=>'FieldDescHelp');
 		$this->export_sql_start[$r]='SELECT DISTINCT ';
-		$this->export_sql_end[$r]  =' FROM '.MAIN_DB_PREFIX.'piste as t';
-		$this->export_sql_end[$r]  =' LEFT JOIN '.MAIN_DB_PREFIX.'piste_line as tl ON tl.fk_piste = t.rowid';
+		$this->export_sql_end[$r]  =' FROM '.MAIN_DB_PREFIX.'xsport_piste as p';
+		//$this->export_sql_end[$r]  =' LEFT JOIN '.MAIN_DB_PREFIX.'piste_line as tl ON tl.fk_piste = t.rowid';
 		$this->export_sql_end[$r] .=' WHERE 1 = 1';
-		$this->export_sql_end[$r] .=' AND t.entity IN ('.getEntity('piste').')';
+		//$this->export_sql_end[$r] .=' AND p.entity IN ('.getEntity('piste').')';
 		$r++;
 		/* END MODULEBUILDER EXPORT PISTE */
 
