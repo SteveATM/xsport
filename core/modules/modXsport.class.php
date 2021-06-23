@@ -446,32 +446,36 @@ class modXsport extends DolibarrModules
 		// Exports profiles provided by this module
 		$r = 1;
 		/* BEGIN MODULEBUILDER EXPORT PISTE */
-		/*
+
 		$langs->load("xsport@xsport");
 		$this->export_code[$r]=$this->rights_class.'_'.$r;
 		$this->export_label[$r]='PisteLines';	// Translation key (used only if key ExportDataset_xxx_z not found)
 		$this->export_icon[$r]='piste@xsport';
-		// Define $this->export_fields_array, $this->export_TypeFields_array and $this->export_entities_array
+		$this->export_fields_array[$r] = array(
+			'p.ref'=>"Ref", 'p.label'=>"Label",
+		);
+		$this->export_TypeFields_array[$r] = array(
+			'p.ref'=>"Text", 'p.label'=>"Text",
+		);
+		$this->export_entities_array[$r] = array(
+			'p.ref'=>"piste", 'p.label'=>"piste",
+		);
 		$keyforclass = 'Piste'; $keyforclassfile='/xsport/class/piste.class.php'; $keyforelement='piste@xsport';
-		include DOL_DOCUMENT_ROOT.'/core/commonfieldsinexport.inc.php';
 		//$this->export_fields_array[$r]['t.fieldtoadd']='FieldToAdd'; $this->export_TypeFields_array[$r]['t.fieldtoadd']='Text';
 		//unset($this->export_fields_array[$r]['t.fieldtoremove']);
 		//$keyforclass = 'PisteLine'; $keyforclassfile='/xsport/class/piste.class.php'; $keyforelement='pisteline@xsport'; $keyforalias='tl';
-		//include DOL_DOCUMENT_ROOT.'/core/commonfieldsinexport.inc.php';
-		$keyforselect='piste'; $keyforaliasextra='extra'; $keyforelement='piste@xsport';
-		include DOL_DOCUMENT_ROOT.'/core/extrafieldsinexport.inc.php';
+		//$keyforselect='piste'; $keyforaliasextra='extra'; $keyforelement='piste@xsport';
 		//$keyforselect='pisteline'; $keyforaliasextra='extraline'; $keyforelement='pisteline@xsport';
-		//include DOL_DOCUMENT_ROOT.'/core/extrafieldsinexport.inc.php';
-		//$this->export_dependencies_array[$r] = array('pisteline'=>array('tl.rowid','tl.ref')); // To force to activate one or several fields if we select some fields that need same (like to select a unique key if we ask a field of a child to avoid the DISTINCT to discard them, or for computed field than need several other fields)
-		//$this->export_special_array[$r] = array('t.field'=>'...');
-		//$this->export_examplevalues_array[$r] = array('t.field'=>'Example');
-		//$this->export_help_array[$r] = array('t.field'=>'FieldDescHelp');
+		$this->export_dependencies_array[$r] = array('pisteline'=>array('tl.rowid','tl.ref')); // To force to activate one or several fields if we select some fields that need same (like to select a unique key if we ask a field of a child to avoid the DISTINCT to discard them, or for computed field than need several other fields)
+		$this->export_special_array[$r] = array('t.field'=>'...');
+		$this->export_examplevalues_array[$r] = array('t.field'=>'Example');
+		$this->export_help_array[$r] = array('t.field'=>'FieldDescHelp');
 		$this->export_sql_start[$r]='SELECT DISTINCT ';
-		$this->export_sql_end[$r]  =' FROM '.MAIN_DB_PREFIX.'piste as t';
+		$this->export_sql_end[$r]  =' FROM '.MAIN_DB_PREFIX.'xsport_piste as p';
 		//$this->export_sql_end[$r]  =' LEFT JOIN '.MAIN_DB_PREFIX.'piste_line as tl ON tl.fk_piste = t.rowid';
 		$this->export_sql_end[$r] .=' WHERE 1 = 1';
-		$this->export_sql_end[$r] .=' AND t.entity IN ('.getEntity('piste').')';
-		$r++; */
+		//$this->export_sql_end[$r] .=' AND p.entity IN ('.getEntity('piste').')';
+		$r++;
 		/* END MODULEBUILDER EXPORT PISTE */
 
 		// Imports profiles provided by this module
@@ -493,6 +497,13 @@ class modXsport extends DolibarrModules
 		 $this->export_sql_end[$r] .=' AND t.entity IN ('.getEntity('piste').')';
 		 $r++; */
 		/* END MODULEBUILDER IMPORT PISTE */
+
+		if (!empty($conf->global->EXPORTTOOL_CATEGORIES)) $this->export_fields_array[$r] = array_merge($this->export_fields_array[$r], array('group_concat(cat.label)'=>'Categories'));
+		if (!empty($conf->global->EXPORTTOOL_CATEGORIES)) $this->export_TypeFields_array[$r] = array_merge($this->export_TypeFields_array[$r], array("group_concat(cat.label)"=>'Text'));
+		if (!empty($conf->global->EXPORTTOOL_CATEGORIES)) $this->export_entities_array[$r] = array_merge($this->export_entities_array[$r], array("group_concat(cat.label)"=>'category'));
+		if (!empty($conf->global->EXPORTTOOL_CATEGORIES)) $this->export_dependencies_array[$r] = array('category'=>'p.rowid');
+		if (!empty($conf->global->EXPORTTOOL_CATEGORIES)) $this->export_sql_end[$r] .= ' LEFT JOIN '.MAIN_DB_PREFIX.'categorie_piste as cp ON cp.fk_piste = p.rowid LEFT JOIN '.MAIN_DB_PREFIX.'categorie as cat ON cp.fk_categorie = cat.rowid';
+		if (!empty($conf->global->EXPORTTOOL_CATEGORIES)) $this->export_sql_order[$r] = ' GROUP BY p.rowid';
 	}
 
 	/**
