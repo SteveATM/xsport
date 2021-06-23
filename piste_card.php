@@ -305,13 +305,6 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 	$formconfirm = '';
 
-	// Categories
-	if ($conf->categorie->enabled) {
-		print '<tr><td class="valignmiddle">'.$langs->trans("Categories").'</td><td colspan="3">';
-		print $form->showCategories($object->id, Categorie::TYPE_PRODUCT, 1);
-		print "</td></tr>";
-	}
-
 	// Confirmation to delete
 	if ($action == 'delete') {
 		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('DeletePiste'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 1);
@@ -413,6 +406,13 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 	// Other attributes. Fields from hook formObjectOptions and Extrafields.
 	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
+
+	// Categories
+	if ($conf->categorie->enabled) {
+		print '<tr><td class="valignmiddle">'.$langs->trans("Categories").'</td><td colspan="3">';
+		print $form->showCategories($object->id, Categorie::TYPE_PRODUCT, 1);
+		print "</td></tr>";
+	}
 
 	print '</table>';
 	print '</div>';
