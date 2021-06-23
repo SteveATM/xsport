@@ -498,7 +498,7 @@ class modXsport extends DolibarrModules
 		if (!empty($conf->global->EXPORTTOOL_CATEGORIES)) $this->export_TypeFields_array[$r] = array_merge($this->export_TypeFields_array[$r], array("group_concat(cat.label)"=>'Text'));
 		if (!empty($conf->global->EXPORTTOOL_CATEGORIES)) $this->export_entities_array[$r] = array_merge($this->export_entities_array[$r], array("group_concat(cat.label)"=>'category'));
 		if (!empty($conf->global->EXPORTTOOL_CATEGORIES)) $this->export_dependencies_array[$r] = array('category'=>'p.rowid');
-		if (!empty($conf->global->EXPORTTOOL_CATEGORIES)) $this->export_sql_end[$r] .= ' LEFT JOIN '.MAIN_DB_PREFIX.'categorie_piste as cp ON cp.fk_piste = p.rowid LEFT JOIN '.MAIN_DB_PREFIX.'categorie as cat ON cp.fk_categorie = cat.rowid';
+		if (!empty($conf->global->EXPORTTOOL_CATEGORIES)) $this->export_sql_end[$r] .= ' LEFT JOIN '.MAIN_DB_PREFIX.'categorie_xsport as cp ON cp.fk_piste = p.rowid LEFT JOIN '.MAIN_DB_PREFIX.'categorie as cat ON cp.fk_categorie = cat.rowid';
 		if (!empty($conf->global->EXPORTTOOL_CATEGORIES)) $this->export_sql_order[$r] = ' GROUP BY p.rowid';
 	}
 
