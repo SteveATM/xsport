@@ -175,7 +175,7 @@ class modXsport extends DolibarrModules
 		// Array to add new pages in new tabs
 		$this->tabs = array();
 		// Example:
-		$this->tabs[] = array('data'=>'categories_0:+tabname1:Title1:mylangfile@xsport:$user->rights->xsport->read:/xsport/mynewtab1.php?id=__ID__');  					// To add a new tab identified by code tabname1
+		//$this->tabs[] = array('data'=>'categories_0:+tabname1:Title1:mylangfile@xsport:$user->rights->xsport->read:/xsport/mynewtab1.php?id=__ID__');  					// To add a new tab identified by code tabname1
 		// $this->tabs[] = array('data'=>'objecttype:+tabname2:SUBSTITUTION_Title2:mylangfile@xsport:$user->rights->othermodule->read:/xsport/mynewtab2.php?id=__ID__',  	// To add another new tab identified by code tabname2. Label will be result of calling all substitution functions on 'Title2' key.
 		// $this->tabs[] = array('data'=>'objecttype:-tabname:NU:conditiontoremove');                                                     										// To remove an existing tab identified by code tabname
 		//
@@ -513,13 +513,6 @@ class modXsport extends DolibarrModules
 		 $this->export_sql_end[$r] .=' AND t.entity IN ('.getEntity('piste').')';
 		 $r++; */
 		/* END MODULEBUILDER IMPORT PISTE */
-
-		if (!empty($conf->global->EXPORTTOOL_CATEGORIES)) $this->export_fields_array[$r] = array_merge($this->export_fields_array[$r], array('group_concat(cat.label)'=>'Categories'));
-		if (!empty($conf->global->EXPORTTOOL_CATEGORIES)) $this->export_TypeFields_array[$r] = array_merge($this->export_TypeFields_array[$r], array("group_concat(cat.label)"=>'Text'));
-		if (!empty($conf->global->EXPORTTOOL_CATEGORIES)) $this->export_entities_array[$r] = array_merge($this->export_entities_array[$r], array("group_concat(cat.label)"=>'category'));
-		if (!empty($conf->global->EXPORTTOOL_CATEGORIES)) $this->export_dependencies_array[$r] = array('category'=>'p.rowid');
-		if (!empty($conf->global->EXPORTTOOL_CATEGORIES)) $this->export_sql_end[$r] .= ' LEFT JOIN '.MAIN_DB_PREFIX.'categorie_xsport as cp ON cp.fk_piste = p.rowid LEFT JOIN '.MAIN_DB_PREFIX.'categorie as cat ON cp.fk_categorie = cat.rowid';
-		if (!empty($conf->global->EXPORTTOOL_CATEGORIES)) $this->export_sql_order[$r] = ' GROUP BY p.rowid';
 	}
 
 	/**

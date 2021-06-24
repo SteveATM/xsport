@@ -61,7 +61,6 @@ if (!$res) die("Include of main fails");
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
-require_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
 dol_include_once('/xsport/class/piste.class.php');
 dol_include_once('/xsport/lib/xsport_piste.lib.php');
 
@@ -228,14 +227,6 @@ if ($action == 'create')
 	// Common attributes
 	include DOL_DOCUMENT_ROOT.'/core/tpl/commonfields_add.tpl.php';
 
-	if ($conf->categorie->enabled) {
-		// Categories
-		print '<tr><td>'.$langs->trans("Categories").'</td><td colspan="3">';
-		$cate_arbo = $form->select_all_categories(Categorie::TYPE_PRODUCT, '', 'parent', 64, 0, 1);
-		print img_picto('', 'category').$form->multiselectarray('categories', $cate_arbo, GETPOST('categories', 'array'), '', 0, 'quatrevingtpercent widthcentpercentminusx', 0, 0);
-		print "</td></tr>";
-	}
-
 	// Other attributes
 	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_add.tpl.php';
 
@@ -272,14 +263,6 @@ if (($id || $ref) && $action == 'edit')
 
 	// Common attributes
 	include DOL_DOCUMENT_ROOT.'/core/tpl/commonfields_edit.tpl.php';
-
-	if ($conf->categorie->enabled) {
-		// Categories
-		print '<tr><td>'.$langs->trans("Categories").'</td><td colspan="3">';
-		$cate_arbo = $form->select_all_categories(Categorie::TYPE_PRODUCT, '', 'parent', 64, 0, 1);
-		print img_picto('', 'category').$form->multiselectarray('categories', $cate_arbo, GETPOST('categories', 'array'), '', 0, 'quatrevingtpercent widthcentpercentminusx', 0, 0);
-		print "</td></tr>";
-	}
 
 	// Other attributes
 	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_edit.tpl.php';
@@ -406,13 +389,6 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 	// Other attributes. Fields from hook formObjectOptions and Extrafields.
 	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
-
-	// Categories
-	if ($conf->categorie->enabled) {
-		print '<tr><td class="valignmiddle">'.$langs->trans("Categories").'</td><td colspan="3">';
-		print $form->showCategories($object->id, Categorie::TYPE_PRODUCT, 1);
-		print "</td></tr>";
-	}
 
 	print '</table>';
 	print '</div>';
