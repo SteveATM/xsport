@@ -200,8 +200,58 @@ class modXsport extends DolibarrModules
 		// 'thirdparty'       to add a tab in third party view
 		// 'user'             to add a tab in user view
 
+		// Custom Dictionary
+		$this->dictionaries=array(
+			'langs'=>'xsport@xsport',
+
+			// List of tables we want to see into dictonnary editor
+			'tabname'=>array(
+				MAIN_DB_PREFIX."c_xsport_type",
+			),
+
+			// Label of tables
+			'tablib'=>array(
+				"DictionaryXsportType",
+			),
+
+			// Request to select fields
+			'tabsql'=>array(
+				'SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'c_xsport_type as f',
+			),
+
+			// Sort order
+			'tabsqlsort'=>array(
+				"label ASC",
+			),
+
+			// List of fields (result of select to show dictionary)
+			'tabfield'=>array(
+				"code,label",
+			),
+
+			// List of fields (list of fields to edit a record)
+			'tabfieldvalue'=>array(
+				"code,label",
+			),
+
+			// List of fields (list of fields for insert)
+			'tabfieldinsert'=>array(
+				"code,label",
+			),
+
+			// Name of columns with primary key (try to always name it 'rowid')
+			'tabrowid'=>array(
+				"rowid",
+			),
+
+			// Condition to show each dictionary
+			'tabcond'=>array(
+				$conf->xsport->enabled,
+			)
+		);
+
 		// Dictionaries
-		$this->dictionaries = array();
+		//$this->dictionaries = array();
 		/* Example:
 		$this->dictionaries=array(
 			'langs'=>'xsport@xsport',
