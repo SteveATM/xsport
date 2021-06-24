@@ -1,5 +1,5 @@
-CREATE TABLE llx_c_xsport_type (
+CREATE TABLE llx_categorie_piste (
     rowid int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    fk_categorie_id integer,
-    fk_piste_id integer
+    fk_categorie_id int(11) NOT NULL DEFAULT '0',
+    fk_piste_id int(11) NOT NULL DEFAULT '0'
 )
