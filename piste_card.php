@@ -230,11 +230,18 @@ if ($action == 'create')
 	// Categories
 	if ($conf->categorie->enabled) {
 		print '<tr><td class="valignmiddle">'.$langs->trans("Categories").'</td><td colspan="3">';
-		$cate_piste = [
-			"test1",
-			"test2",
-			"test3"
-		];
+		function getAllCatPiste($db) {
+			$Tcat = [];
+			$sql = $db->query('SELECT * FROM llx_c_xsport_type');
+
+			$cat = new stdClass();
+			$cat->id = $sql->rowid;
+			$cat->label = $sql->label;
+			$Tcat = $cat;
+
+			return $Tcat;
+		}
+		$cate_piste = getAllCatPiste($db);
 
 		print $form->multiselectarray('categories', $cate_piste, GETPOST('categories', 'array'), '', 0, 'minwidth300 quatrevingtpercent widthcentpercentminusx', 0, 0);
 		print "</td></tr>";
@@ -276,6 +283,19 @@ if (($id || $ref) && $action == 'edit')
 
 	// Common attributes
 	include DOL_DOCUMENT_ROOT.'/core/tpl/commonfields_edit.tpl.php';
+
+	// Categories
+	if ($conf->categorie->enabled) {
+		print '<tr><td class="valignmiddle">'.$langs->trans("Categories").'</td><td colspan="3">';
+		$cate_piste = [
+			"test1",
+			"test2",
+			"test3"
+		];
+
+		print $form->multiselectarray('categories', $cate_piste, GETPOST('categories', 'array'), '', 0, 'minwidth300 quatrevingtpercent widthcentpercentminusx', 0, 0);
+		print "</td></tr>";
+	}
 
 	// Other attributes
 	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_edit.tpl.php';
@@ -399,6 +419,20 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	//unset($object->fields['fk_project']);				// Hide field already shown in banner
 	//unset($object->fields['fk_soc']);					// Hide field already shown in banner
 	include DOL_DOCUMENT_ROOT.'/core/tpl/commonfields_view.tpl.php';
+
+	// Categories
+	if ($conf->categorie->enabled) {
+		print '<tr><td class="valignmiddle">'.$langs->trans("Categories").'</td><td colspan="3">';
+		$cate_piste = [
+			"test1",
+			"test2",
+			"test3"
+		];
+
+		//print $form->showCategories($object->id, $cate_piste, 1);
+		//print $form->multiselectarray('categories', $cate_piste, GETPOST('categories', 'array'), '', 0, 'minwidth300 quatrevingtpercent widthcentpercentminusx', 0, 0);
+		print "</td></tr>";
+	}
 
 	// Other attributes. Fields from hook formObjectOptions and Extrafields.
 	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
