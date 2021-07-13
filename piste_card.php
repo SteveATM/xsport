@@ -22,6 +22,10 @@
  *		\brief      Page to create/edit/view piste
  */
 
+/**
+ * @var DoliDB $db
+ */
+
 //if (! defined('NOREQUIREDB'))              define('NOREQUIREDB', '1');				// Do not create database handler $db
 //if (! defined('NOREQUIREUSER'))            define('NOREQUIREUSER', '1');				// Do not load object $user
 //if (! defined('NOREQUIRESOC'))             define('NOREQUIRESOC', '1');				// Do not load object $mysoc
@@ -229,21 +233,15 @@ if ($action == 'create')
 
 	// Categories
 	if ($conf->categorie->enabled) {
-		print '<tr><td class="valignmiddle">'.$langs->trans("Categories").'</td><td colspan="3">';
-		function getAllCatPiste($db) {
-			$Tcat = [];
-			$sql = $db->query('SELECT * FROM llx_c_xsport_type');
-
-			$cat = new stdClass();
-			$cat->id = $sql->rowid;
-			$cat->label = $sql->label;
-			$Tcat = $cat;
-
-			return $Tcat;
+		print '<tr><td>'.$langs->trans("Categories").'</td><td>';
+		$sql_cat = $db->getRows('SELECT rowid as id, label FROM '. MAIN_DB_PREFIX . 'c_xsport_type WHERE active = 1');
+		$cate_piste = array();
+		if($sql_cat) {
+			foreach ($sql_cat as $catItem){
+				$cate_piste[$catItem->id] = $catItem->label;
+			}
 		}
-		$cate_piste = getAllCatPiste($db);
-
-		print $form->multiselectarray('categories', $cate_piste, GETPOST('categories', 'array'), '', 0, 'minwidth300 quatrevingtpercent widthcentpercentminusx', 0, 0);
+		print img_picto('', 'category').$form->multiselectarray('categories', $cate_piste, GETPOST('categories', 'array'), '', 0, 'minwidth300 quatrevingtpercent widthcentpercentminusx', 0, 0);
 		print "</td></tr>";
 	}
 
@@ -285,17 +283,30 @@ if (($id || $ref) && $action == 'edit')
 	include DOL_DOCUMENT_ROOT.'/core/tpl/commonfields_edit.tpl.php';
 
 	// Categories
-	if ($conf->categorie->enabled) {
-		print '<tr><td class="valignmiddle">'.$langs->trans("Categories").'</td><td colspan="3">';
-		$cate_piste = [
-			"test1",
-			"test2",
-			"test3"
-		];
-
-		print $form->multiselectarray('categories', $cate_piste, GETPOST('categories', 'array'), '', 0, 'minwidth300 quatrevingtpercent widthcentpercentminusx', 0, 0);
-		print "</td></tr>";
+	print '<tr><td>'.$langs->trans("Categories").'</td><td>';
+	$sql_cat = $db->getRows('SELECT rowid as id, label FROM '. MAIN_DB_PREFIX . 'c_xsport_type WHERE active = 1');
+	$cate_piste = array();
+	if($sql_cat) {
+		foreach ($sql_cat as $catItem){
+			$cate_piste[$catItem->id] = $catItem->label;
+		}
 	}
+
+	$selectedCats = GETPOST('categories', 'array');
+	if(empty($selectedCats)){
+		$selectedCats = array();
+		$object->fetchCats();
+		if(!empty($object->TCategoriesPistes)){
+			foreach ($object->TCategoriesPistes as $item) {
+				$selectedCats[] = $item->id;
+			}
+		}
+	}
+
+
+
+	print img_picto('', 'category').$form->multiselectarray('categories', $cate_piste, $selectedCats, '', 0, 'minwidth300 quatrevingtpercent widthcentpercentminusx', 0, 0);
+	print "</td></tr>";
 
 	// Other attributes
 	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_edit.tpl.php';
@@ -309,6 +320,11 @@ if (($id || $ref) && $action == 'edit')
 	print '</div>';
 
 	print '</form>';
+}
+
+// Update categories
+if ($action == 'update') {
+	$sql_update = $this->db->query('INSERT INTO' . MAIN_DB_PREFIX . 'xsport_categorie_piste VALUES ()');
 }
 
 // Part to show record

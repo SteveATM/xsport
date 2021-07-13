@@ -63,6 +63,11 @@ class Piste extends CommonObject
 	 */
 	public $picto = 'piste@xsport';
 
+	/**
+	 * @var array
+	 */
+	public $TCategoriesPistes = array();
+
 
 	const STATUS_DRAFT = 0;
 	const STATUS_VALIDATED = 1;
@@ -439,6 +444,16 @@ class Piste extends CommonObject
 			dol_syslog(__METHOD__.' '.join(',', $this->errors), LOG_ERR);
 
 			return -1;
+		}
+	}
+
+	public function fetchCats(){
+		$this->TCategoriesPistes = array();
+
+		$sql_cat = $this->db->getRows('SELECT fk_categorie_id as id  FROM '. MAIN_DB_PREFIX . 'xsport_categorie_piste WHERE fk_piste_id = '.$this->id);
+
+		if($sql_cat) {
+			$this->TCategoriesPistes = $sql_cat;
 		}
 	}
 
