@@ -136,6 +136,14 @@ if ($action === "update") {
 	}
 }
 
+// Add categories
+if ($action === "add") {
+	$cate = GETPOST("categories", "array");
+	foreach ($cate as $catid) {
+		$resql = $db->query('INSERT INTO '. MAIN_DB_PREFIX .'xsport_categorie_piste (fk_categorie_id, fk_piste_id) VALUES ('. $catid . ', '.$object->id.')');
+	}
+}
+
 $parameters = array();
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
@@ -267,14 +275,6 @@ if ($action == 'create')
 	print '</form>';
 
 	//dol_set_focus('input[name="ref"]');
-}
-
-// Add categorie
-if ($action === "add") {
-	$cate = GETPOST("categories", "array");
-	foreach ($cate as $catid) {
-		$resql = $db->query('INSERT INTO '. MAIN_DB_PREFIX .'xsport_categorie_piste (fk_categorie_id, fk_piste_id) VALUES ('. $catid . ', '.$object->id.')');
-	}
 }
 
 // Part to edit record
@@ -443,6 +443,26 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	//unset($object->fields['fk_soc']);					// Hide field already shown in banner
 	include DOL_DOCUMENT_ROOT.'/core/tpl/commonfields_view.tpl.php';
 
+	// Categories
+	print '<tr><td>'.$langs->trans("Categories").'</td><td>';
+	$sql_cat = $db->getRows('SELECT rowid as id, label FROM '. MAIN_DB_PREFIX . 'c_xsport_type WHERE active = 1');
+	$cate_piste = array();
+
+	if($sql_cat) {
+		foreach ($sql_cat as $catItem){
+			$cate_piste[$catItem->id] = $catItem->label;
+		}
+	}
+
+	$cate_piste2 = array();
+	$sql_cat = $db->getRows('SELECT fk_categorie_id as id FROM '. MAIN_DB_PREFIX . 'xsport_categorie_piste WHERE fk_piste_id = '.$object->id);
+	foreach ($sql_cat as $catItem){
+		$cate_piste2[] = $catItem->id;
+		print ' ' . $cate_piste[$catItem->id];
+	}
+	//print img_picto('', 'category').$form->multiselectarray('categories', $cate_piste, $cate_piste2, '', 0, 'minwidth300 quatrevingtpercent widthcentpercentminusx', 0, 0);
+	print "</td></tr>";
+
 	// Other attributes. Fields from hook formObjectOptions and Extrafields.
 	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
 
@@ -507,25 +527,6 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 		print "</form>\n";
 	}
-
-	// Categories
-	print '<tr><td>'.$langs->trans("Categories").'</td><td>';
-	$sql_cat = $db->getRows('SELECT rowid as id, label FROM '. MAIN_DB_PREFIX . 'c_xsport_type WHERE active = 1');
-	$cate_piste = array();
-
-	if($sql_cat) {
-		foreach ($sql_cat as $catItem){
-			$cate_piste[$catItem->id] = $catItem->label;
-		}
-	}
-
-	$cate_piste2 = array();
-	$sql_cat = $db->getRows('SELECT fk_categorie_id as id FROM '. MAIN_DB_PREFIX . 'xsport_categorie_piste WHERE fk_piste_id = '.$object->id);
-	foreach ($sql_cat as $catItem){
-		$cate_piste2[] = $catItem->id;
-	}
-	print img_picto('', 'category').$form->multiselectarray('categories', $cate_piste, $cate_piste2, '', 0, 'minwidth300 quatrevingtpercent widthcentpercentminusx', 0, 0);
-	print "</td></tr>";
 
 	// Buttons for actions
 
