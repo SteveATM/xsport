@@ -149,7 +149,7 @@ if (empty($reshook))
 
 
 	// Add categories
-	if (($action == 'add'|| $action === "update" ) && !empty($permissiontoadd)){
+	if (($action == 'add'|| $action == "update" ) && !empty($permissiontoadd)){
 		$cate = GETPOST("categories", "array");
 		if(!empty($cate) && is_array($cate)) {
 			foreach ($cate as $catid){

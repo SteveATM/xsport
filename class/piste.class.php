@@ -250,8 +250,8 @@ class Piste extends CommonObject
 		if($res>0) {
 			if(!empty($this->TCategoriesPistes)){
 				foreach ($this->TCategoriesPistes as $catPiste) {
-					$sql = 'INSERT INTO '. MAIN_DB_PREFIX .'xsport_categorie_piste (fk_categorie_id, fk_piste_id) VALUES ('. intval($catPiste->id) . ', '.$this->id.')';
-					$res = $this->db->query($sql);
+					$sql = 'INSERT INTO '. MAIN_DB_PREFIX .'xsport_categorie_piste (fk_categorie_id, fk_piste_id) VALUES ('. intval($catPiste->id) . ', '.$res.')';
+					$rescat = $this->db->query($sql);
 				}
 			}
 		}
@@ -470,14 +470,13 @@ class Piste extends CommonObject
 
 
 	public function getCats($getId = false){
-		$this->TCategoriesPistes = array();
 
 		$sql_cat = $this->db->getRows('SELECT fk_categorie_id as id  FROM '. MAIN_DB_PREFIX . 'xsport_categorie_piste WHERE fk_piste_id = '.$this->id);
 
 		if($getId) {
 			if($sql_cat) {
 				foreach($sql_cat as $item) {
-					$TActual[$item->id] = $item;
+					$TActual[$item->id] = $item->id;
 				}
 			}
 			return $TActual;
@@ -496,6 +495,7 @@ class Piste extends CommonObject
 	public function update(User $user, $notrigger = false)
 	{
 		$res =$this->updateCommon($user, $notrigger);
+
 		if($res>0) {
 
 			if(empty($this->TCategoriesPistes)) {
@@ -517,18 +517,18 @@ class Piste extends CommonObject
 								break;
 							}
 						}
-
 						if(!$found) {
-							$res = $this->db->query('DELETE FROM ' . MAIN_DB_PREFIX . 'xsport_categorie_piste WHERE fk_piste_id = '.$this->id .' AND  fk_categorie_id = ' . $pistId);
+							$resdel = $this->db->query('DELETE FROM ' . MAIN_DB_PREFIX . 'xsport_categorie_piste WHERE fk_piste_id = '.$this->id .' AND  fk_categorie_id = ' . $pistId);
 						}
 					}
 				}
-
 				foreach ($this->TCategoriesPistes as $catPiste) {
-
 					if(empty($TActual[$catPiste->id])) {
 						$sql = 'INSERT INTO '. MAIN_DB_PREFIX .'xsport_categorie_piste (fk_categorie_id, fk_piste_id) VALUES ('. intval($catPiste->id) . ', '.$this->id.')';
-						$res = $this->db->query($sql);
+						$resins = $this->db->query($sql);
+						if(!$resins) {
+							return -1;
+						}
 					}
 				}
 			}
