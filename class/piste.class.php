@@ -245,7 +245,18 @@ class Piste extends CommonObject
 	 */
 	public function create(User $user, $notrigger = false)
 	{
-		return $this->createCommon($user, $notrigger);
+		$res = $this->createCommon($user, $notrigger);
+		// if TCategoriesPistes is not empty, for each elements, make a request INSERT INTO
+		if($res>0) {
+			if(!empty($this->TCategoriesPistes)){
+				foreach ($this->TCategoriesPistes as $catPiste) {
+					$sql = 'INSERT INTO '. MAIN_DB_PREFIX .'xsport_categorie_piste (fk_categorie_id, fk_piste_id) VALUES ('. intval($catPiste->id) . ', '.$this->id.')';
+					$res = $this->db->query($sql);
+				}
+			}
+		}
+
+		return $res;
 	}
 
 	/**
@@ -450,11 +461,29 @@ class Piste extends CommonObject
 	public function fetchCats(){
 		$this->TCategoriesPistes = array();
 
-		$sql_cat = $this->db->getRows('SELECT fk_categorie_id as id  FROM '. MAIN_DB_PREFIX . 'xsport_categorie_piste WHERE fk_piste_id = '.$this->id);
+		$sql_cat = $this->getCats();
 
 		if($sql_cat) {
 			$this->TCategoriesPistes = $sql_cat;
 		}
+	}
+
+
+	public function getCats($getId = false){
+		$this->TCategoriesPistes = array();
+
+		$sql_cat = $this->db->getRows('SELECT fk_categorie_id as id  FROM '. MAIN_DB_PREFIX . 'xsport_categorie_piste WHERE fk_piste_id = '.$this->id);
+
+		if($getId) {
+			if($sql_cat) {
+				foreach($sql_cat as $item) {
+					$TActual[$item->id] = $item;
+				}
+			}
+			return $TActual;
+		}
+
+		return $sql_cat;
 	}
 
 	/**
@@ -466,7 +495,46 @@ class Piste extends CommonObject
 	 */
 	public function update(User $user, $notrigger = false)
 	{
-		return $this->updateCommon($user, $notrigger);
+		$res =$this->updateCommon($user, $notrigger);
+		if($res>0) {
+
+			if(empty($this->TCategoriesPistes)) {
+				$res = $this->db->query('DELETE FROM ' . MAIN_DB_PREFIX . 'xsport_categorie_piste WHERE fk_piste_id = '.$this->id);
+			}
+
+
+			if(!empty($this->TCategoriesPistes)){
+
+				$TActual = $this->getCats(true);
+
+				if ($TActual) {
+					foreach ($TActual as $pistId) {
+
+						$found = false;
+						foreach ($this->TCategoriesPistes as $catPiste) {
+							if($catPiste->id == $pistId) {
+								$found = true;
+								break;
+							}
+						}
+
+						if(!$found) {
+							$res = $this->db->query('DELETE FROM ' . MAIN_DB_PREFIX . 'xsport_categorie_piste WHERE fk_piste_id = '.$this->id .' AND  fk_categorie_id = ' . $pistId);
+						}
+					}
+				}
+
+				foreach ($this->TCategoriesPistes as $catPiste) {
+
+					if(empty($TActual[$catPiste->id])) {
+						$sql = 'INSERT INTO '. MAIN_DB_PREFIX .'xsport_categorie_piste (fk_categorie_id, fk_piste_id) VALUES ('. intval($catPiste->id) . ', '.$this->id.')';
+						$res = $this->db->query($sql);
+					}
+				}
+			}
+		}
+
+		return $res;
 	}
 
 	/**

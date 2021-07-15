@@ -127,22 +127,6 @@ $upload_dir = $conf->xsport->multidir_output[isset($object->entity) ? $object->e
  * Actions
  */
 
-// Update categories
-if ($action === "update") {
-	$cate = GETPOST("categories", "array");
-	$sql_cat = $db->query('DELETE FROM ' . MAIN_DB_PREFIX . 'xsport_categorie_piste WHERE fk_piste_id = '.$object->id);
-	foreach ($cate as $catid) {
-		$resql = $db->query('INSERT INTO '. MAIN_DB_PREFIX .'xsport_categorie_piste (fk_categorie_id, fk_piste_id) VALUES ('. $catid . ', '.$object->id.')');
-	}
-}
-
-// Add categories
-if ($action === "add") {
-	$cate = GETPOST("categories", "array");
-	foreach ($cate as $catid) {
-		$resql = $db->query('INSERT INTO '. MAIN_DB_PREFIX .'xsport_categorie_piste (fk_categorie_id, fk_piste_id) VALUES ('. $catid . ', '.$object->id.')');
-	}
-}
 
 $parameters = array();
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
@@ -162,6 +146,29 @@ if (empty($reshook))
 	}
 
 	$triggermodname = 'XSPORT_PISTE_MODIFY'; // Name of trigger action code to execute when we modify record
+
+
+	// Add categories
+	if (($action == 'add'|| $action === "update" ) && !empty($permissiontoadd)){
+		$cate = GETPOST("categories", "array");
+		if(!empty($cate) && is_array($cate)) {
+			foreach ($cate as $catid){
+				$catItem = new stdClass();
+				$catItem->id = $catid;
+				$object->TCategoriesPistes[] = $catItem;
+			}
+		}
+	}
+
+//	// Update categories
+//	if ($action === "update") {
+//		$cate = GETPOST("categories", "array");
+//		$sql_cat = $db->query('DELETE FROM ' . MAIN_DB_PREFIX . 'xsport_categorie_piste WHERE fk_piste_id = '.$object->id);
+//		foreach ($cate as $catid) {
+//			$resql = $db->query('INSERT INTO '. MAIN_DB_PREFIX .'xsport_categorie_piste (fk_categorie_id, fk_piste_id) VALUES ('. $catid . ', '.$object->id.')');
+//		}
+//	}
+
 
 	// Actions cancel, add, update, update_extras, confirm_validate, confirm_delete, confirm_deleteline, confirm_clone, confirm_close, confirm_setdraft, confirm_reopen
 	include DOL_DOCUMENT_ROOT.'/core/actions_addupdatedelete.inc.php';
