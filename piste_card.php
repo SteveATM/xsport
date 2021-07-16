@@ -160,16 +160,6 @@ if (empty($reshook))
 		}
 	}
 
-//	// Update categories
-//	if ($action === "update") {
-//		$cate = GETPOST("categories", "array");
-//		$sql_cat = $db->query('DELETE FROM ' . MAIN_DB_PREFIX . 'xsport_categorie_piste WHERE fk_piste_id = '.$object->id);
-//		foreach ($cate as $catid) {
-//			$resql = $db->query('INSERT INTO '. MAIN_DB_PREFIX .'xsport_categorie_piste (fk_categorie_id, fk_piste_id) VALUES ('. $catid . ', '.$object->id.')');
-//		}
-//	}
-
-
 	// Actions cancel, add, update, update_extras, confirm_validate, confirm_delete, confirm_deleteline, confirm_clone, confirm_close, confirm_setdraft, confirm_reopen
 	include DOL_DOCUMENT_ROOT.'/core/actions_addupdatedelete.inc.php';
 
