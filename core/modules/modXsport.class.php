@@ -605,8 +605,9 @@ class modXsport extends DolibarrModules
 		if ($result < 0) return -1; // Do not activate module if error 'not allowed' returned when loading module SQL queries (the _load_table run sql with run_sql with the error allowed parameter set to 'default')
 
 		// Create extrafields during init
-		//include_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
-		//$extrafields = new ExtraFields($this->db);
+		include_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
+		$extrafields = new ExtraFields($this->db);
+		$result1=$extrafields->addExtraField('mentionspe', "Mention Special", 'varchar', 1, 10, 'propal',      0, 0, '', '', 1, '', 1, 0, '', '', 'xsport@xsport', '$conf->xsport->enabled', 0 , 1);
 		//$result1=$extrafields->addExtraField('xsport_myattr1', "New Attr 1 label", 'boolean', 1,  3, 'thirdparty',   0, 0, '', '', 1, '', 0, 0, '', '', 'xsport@xsport', '$conf->xsport->enabled');
 		//$result2=$extrafields->addExtraField('xsport_myattr2', "New Attr 2 label", 'varchar', 1, 10, 'project',      0, 0, '', '', 1, '', 0, 0, '', '', 'xsport@xsport', '$conf->xsport->enabled');
 		//$result3=$extrafields->addExtraField('xsport_myattr3', "New Attr 3 label", 'varchar', 1, 10, 'bank_account', 0, 0, '', '', 1, '', 0, 0, '', '', 'xsport@xsport', '$conf->xsport->enabled');
