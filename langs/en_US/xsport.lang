@@ -42,6 +42,7 @@ XSPORT_MYPARAM1Tooltip = Piste default price tooltip
 XSPORT_MYPARAM2=My param 2
 XSPORT_MYPARAM2Tooltip=My param 2 tooltip
 XSPORT_MYPARAM3 = Test param
+MentSpe = Special mention
 
 #
 # About page

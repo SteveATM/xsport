@@ -39,6 +39,7 @@ Settings = Réglages
 XsportSetupPage = Page de configuration du module Xsport
 XSPORT_MYPARAM1 = Prix piste par défaut
 XSPORT_MYPARAM3 = Test param
+MentSpe = Mention spéciale
 
 #
 # Page À propos
